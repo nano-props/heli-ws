@@ -19,6 +19,7 @@ dependencies {
     implementation("io.helidon.webserver:helidon-webserver-static-content")
     implementation("io.helidon.config:helidon-config")
     implementation("io.helidon.logging:helidon-logging-jul")
+    nativeImageCompileOnly("io.helidon.integrations.graal:helidon-graal-native-image-extension:$helidonVersion")
 }
 
 application { mainClass = "helo.ws.Main" }
@@ -29,6 +30,8 @@ graalvmNative {
             imageName = "heli-ws"
             mainClass = "helo.ws.Main"
             buildArgs.add("-O2")
+            buildArgs.add("--add-exports=org.graalvm.nativeimage.builder/com.oracle.svm.core.configure=ALL-UNNAMED")
+            resources.autodetect()
         }
     }
 }

@@ -13,7 +13,6 @@ final class HeliWsServer {
     static WebServer start(int port) {
         var listener = new ChatListener(new ChatSessions());
         return WebServer.builder()
-                .featuresDiscoverServices(false)
                 .port(port)
                 .addRouting(HttpRouting.builder().register("/", staticWeb()))
                 .addRouting(WsRouting.builder().endpoint("/ws", listener))

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>heli-ws</title>
+<style>
+body{font-family:sans-serif;max-width:640px;margin:2em auto}
+#log{border:1px solid #ccc;height:300px;overflow:auto;padding:8px;margin-bottom:8px}
+input{width:80%}
+</style>
+</head>
+<body>
+<h3>heli-ws - Helidon WebSocket</h3>
+<div id="log"></div>
+<input id="msg" placeholder="消息，或 /ping /online" autofocus>
+<button id="send">发送</button>
+<script>
+const log = document.getElementById('log'), msg = document.getElementById('msg');
+const ws = new WebSocket((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/ws');
+const add = t => { const d = document.createElement('div'); d.textContent = t; log.appendChild(d); log.scrollTop = log.scrollHeight; };
+ws.onopen = () => add('[connected]');
+ws.onclose = () => add('[closed]');
+ws.onmessage = e => add(e.data);
+const send = () => { if (msg.value) { ws.send(msg.value); msg.value = ''; } };
+document.getElementById('send').onclick = send;
+msg.onkeydown = e => { if (e.key === 'Enter') send(); };
+</script>
+</body>
+</html>
